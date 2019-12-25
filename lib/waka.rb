@@ -20,7 +20,8 @@ module Waka
     def initialize(path_or_token)
 
       @token = path_or_token
-      @token = File.read(path_or_token).strip if path_or_token.match(/\//)
+      @token = './.wanikani_api_token' if @token == '.'
+      @token = File.read(@token).strip if @token.match(/\//)
     end
 
     def summary
@@ -28,16 +29,28 @@ module Waka
       get(:summary)
     end
 
+    def subjects(*ids)
+
+      get(:subjects, ids: ids)
+    end
+
     protected
 
     def get(*as)
 
-      uri = URI(BASE_URI + as.join('/'))
+      q = {}
+      q = as.pop if as.last.is_a?(Hash)
 
-      http = Net::HTTP.new(uri.host, uri.port)
+      u = BASE_URI + as.join('/')
+      u += '?' + q.map { |k, v| "#{k}=#{v.map(&:to_s).join(',')}" }.join('&') \
+        if q.any?
+p u
+      u = URI(u)
+
+      http = Net::HTTP.new(u.host, u.port)
       http.use_ssl = true
 
-      req = Net::HTTP::Get.new(uri.to_s)
+      req = Net::HTTP::Get.new(u.to_s)
       req.instance_eval { @header.clear }
       def req.set_header(k, v); @header[k] = [ v ]; end
 
