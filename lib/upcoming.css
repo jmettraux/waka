@@ -1,4 +1,10 @@
 
+:root {
+  --radical-colour: #00a1f1;
+  --kanji-colour: #f100a1;
+  --vocabulary-colour: #a100f1;
+}
+
 td {
   font-family: Helvetica Neue;
 }
@@ -20,12 +26,12 @@ td.readings {
 }
 
 tr.r td.text {
-  background-color: #00a1f1;
+  background-color: var(--radical-colour);
 }
 tr.k td.text {
-  background-color: #f100a1;
+  background-color: var(--kanji-colour);
 }
 tr.v td.text {
-  background-color: #a100f1;
+  background-color: var(--vocabulary-colour);
 }
 
