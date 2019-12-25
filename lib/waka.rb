@@ -38,6 +38,13 @@ module Waka
       get(:subjects, ids: ids)
     end
 
+    def assignments(*ids)
+
+      ids = ids[0] if ids.length == 1 && ids.first.is_a?(Array)
+
+      get(:assignments, subject_ids: ids)
+    end
+
     protected
 
     def get(*as)
@@ -91,8 +98,10 @@ module Waka
             .reject { |r|
               r[1].empty? }
 
+        subject_ids = subject_ids.to_a[0, 1000]
+
         subjects =
-          session.subjects(subject_ids.to_a[0, 400])['data']
+          session.subjects(subject_ids)['data']
             .inject({}) { |h, o|
               begin
                 d = o['data']
@@ -110,6 +119,19 @@ module Waka
                 p err
               end
               h }
+
+        session.assignments(subject_ids)['data']
+          .each { |a|
+
+            d = a['data']
+
+            ss = d['srs_stage']
+            ssn = d['srs_stage_name']
+            next unless ssn
+            ssi = ssn[0, 1] + ss.to_s
+            ssi = ssi.downcase if ssn.match(/^A/)
+
+            subjects[d['subject_id']].merge!({ ss: ss, ssn: ssn, ssi: ssi }) }
 
         reviews.each do |r|
           r[1] = r[1]
@@ -161,7 +183,7 @@ module Waka
         puts '<table>'
         upcoming.each do |time, subjects|
           puts '<tr>'
-          puts '<td class="time" colspan="4">'
+          puts '<td class="time" colspan="5">'
           puts time.to_s
           puts '</td>'
           puts '<td class="count" colspan="1">'
@@ -178,6 +200,9 @@ module Waka
             puts '</td>'
             puts '<td class="text">'
             puts s[:t]
+            puts '</td>'
+            puts '<td class="srs">'
+            puts s[:ssi]
             puts '</td>'
             puts '<td class="readings">'
             puts (s[:rs] || []).join(', ')
