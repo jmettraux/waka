@@ -1,4 +1,6 @@
 
+require 'set'
+require 'time'
 require 'json'
 require 'net/http'
 
@@ -31,6 +33,8 @@ module Waka
 
     def subjects(*ids)
 
+      ids = ids[0] if ids.length == 1 && ids.first.is_a?(Array)
+
       get(:subjects, ids: ids)
     end
 
@@ -44,7 +48,6 @@ module Waka
       u = BASE_URI + as.join('/')
       u += '?' + q.map { |k, v| "#{k}=#{v.map(&:to_s).join(',')}" }.join('&') \
         if q.any?
-p u
       u = URI(u)
 
       http = Net::HTTP.new(u.host, u.port)
@@ -70,6 +73,76 @@ p u
   module Reports
 
     class << self
+
+      def upcoming
+
+        session = Waka::Session.new('.')
+        summary = session.summary
+
+        subject_ids = Set.new
+
+        reviews =
+          summary['data']['reviews']
+            .collect { |r|
+              t = Time.parse(r['available_at']).localtime
+              is = r['subject_ids']
+              subject_ids.merge(is)
+              [ t, is ] }
+            .reject { |r|
+              r[1].empty? }
+
+        subjects =
+          session.subjects(subject_ids.to_a[0, 400])['data']
+            .inject({}) { |h, o|
+              begin
+                d = o['data']
+                h[o['id']] =
+                  { i: o['id'],
+                    l: d['level'],
+                    o: o['object'][0, 1],
+                    t: d['characters'],
+                    ms: d['meanings'].map { |m| m['meaning'] },
+                    rs: (d['readings'].map { |r| r['reading'] } rescue nil),
+                    pos: d['part_of_speech'] }
+              rescue => err
+                puts "..."
+                pp o
+                p err
+              end
+              h }
+
+        reviews.each do |r|
+          r[1] = r[1]
+            .collect { |i| subjects[i] }
+            .sort_by { |s|
+              case s[:o]
+              when 'r' then 0
+              when 'k' then 1
+              else 2
+              end }
+        end
+
+        reviews
+      end
+
+      def upcoming_text(*types)
+
+        types = %w[ r k t ] if types.empty?
+        types = types.collect(&:to_s)
+
+        puts
+        upcoming[0, 3].each do |time, subjects|
+          puts time
+          subjects.each do |s|
+            next unless types.include?(s[:o])
+            printf(
+              "%7d %2d %s %-9s %-12s %s\n",
+              s[:i], s[:l], s[:o], s[:t],
+              (s[:rs] || []).join(', '), s[:ms].join(', '))
+          end
+        end
+        puts
+      end
     end
   end
 end
