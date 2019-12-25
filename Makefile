@@ -15,8 +15,9 @@ subjects:
 ss: subjects
 
 upcoming:
-	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
+	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
+	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html" > out.html
 u: upcoming
 
-.PHONY: summary
+.PHONY: summary subjects upcoming
 

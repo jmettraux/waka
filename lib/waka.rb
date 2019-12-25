@@ -143,6 +143,56 @@ module Waka
         end
         puts
       end
+
+      def upcoming_html(*types)
+
+        types = %w[ r k t ] if types.empty?
+        types = types.collect(&:to_s)
+
+        puts '<html>'
+        puts '<head>'
+        puts '<meta charset="utf-8" />'
+        puts '<title>WK Upcoming</title>'
+        puts '<link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">'
+        puts '<style>'
+        puts File.read(File.join(File.dirname(__FILE__), 'upcoming.css')) rescue ''
+        puts '</style>'
+        puts '</head>'
+        puts '<table>'
+        upcoming.each do |time, subjects|
+          puts '<tr>'
+          puts '<td class="time" colspan="4">'
+          puts time.to_s
+          puts '</td>'
+          puts '<td class="count" colspan="1">'
+          puts subjects.size.to_s
+          puts '</td>'
+          puts '</tr>'
+          subjects.each do |s|
+            puts "<tr class=\"#{s[:o]}\">"
+            puts '<td class="id">'
+            puts s[:i]
+            puts '</td>'
+            puts '<td class="level">'
+            puts s[:l]
+            puts '</td>'
+            puts '<td class="text">'
+            puts s[:t]
+            puts '</td>'
+            puts '<td class="readings">'
+            puts (s[:rs] || []).join(', ')
+            puts '</td>'
+            puts '<td class="meanings">'
+            puts s[:ms].join(', ')
+            puts '</td>'
+            puts '</tr>'
+          end
+        end
+        puts '</table>'
+        puts '<body>'
+        puts '</body>'
+        puts '</html>'
+      end
     end
   end
 end

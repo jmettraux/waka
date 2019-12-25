@@ -1,0 +1,31 @@
+
+td {
+  font-family: Helvetica Neue;
+}
+td.count {
+  text-align: right;
+}
+td.id, td.level {
+  text-align: right;
+}
+td.text {
+  font-size: 147%;
+  font-family: 'Kosugi Maru', sans-serif;
+  color: white;
+  text-align: center;
+}
+td.readings {
+  font-size: 110%;
+  font-family: 'Kosugi Maru', sans-serif;
+}
+
+tr.r td.text {
+  background-color: #00a1f1;
+}
+tr.k td.text {
+  background-color: #f100a1;
+}
+tr.v td.text {
+  background-color: #a100f1;
+}
+
