@@ -150,6 +150,17 @@ module Waka
 
             subjects[d['subject_id']].merge!({ ss: ss, ssn: ssn, ssi: ssi }) }
 
+        session.rstatistics(subject_ids)['data']
+          .each { |a|
+            d = a['data']
+            subjects[d['subject_id']]
+              .merge!({
+                mc: d['meaning_correct'], mi: d['meaning_incorrect'],
+                mms: d['meaning_max_streak'], mcs: d['meaning_current_streak'],
+                rc: d['reading_correct'], ri: d['reading_incorrect'],
+                rms: d['reading_max_streak'], rcs: d['reading_current_streak'],
+                pc: d['percentage_correct'] }) }
+
         reviews.each do |r|
           r[1] = r[1]
             .collect { |i| subjects[i] }
@@ -200,7 +211,7 @@ module Waka
         puts '<table>'
         upcoming.each do |time, subjects|
           puts '<tr>'
-          puts '<td class="time" colspan="5">'
+          puts '<td class="time" colspan="6">'
           puts time.to_s
           puts '</td>'
           puts '<td class="count" colspan="1">'
@@ -220,6 +231,9 @@ module Waka
             puts '</td>'
             puts '<td class="srs">'
             puts s[:ssi]
+            puts '</td>'
+            puts '<td class="pc">'
+            puts "#{s[:pc]}%"
             puts '</td>'
             puts '<td class="readings">'
             puts (s[:rs] || []).join(', ')
