@@ -38,11 +38,28 @@ module Waka
       get(:subjects, ids: ids)
     end
 
-    def assignments(*ids)
+    def assignments(*subject_ids)
 
-      ids = ids[0] if ids.length == 1 && ids.first.is_a?(Array)
+      subject_ids = subject_ids[0] \
+        if subject_ids.length == 1 && subject_ids.first.is_a?(Array)
 
-      get(:assignments, subject_ids: ids)
+      get(:assignments, subject_ids: subject_ids)
+    end
+
+    def reviews(*subject_ids)
+
+      subject_ids = subject_ids[0] \
+        if subject_ids.length == 1 && subject_ids.first.is_a?(Array)
+
+      get(:reviews, subject_ids: subject_ids)
+    end
+
+    def rstatistics(*subject_ids)
+
+      subject_ids = subject_ids[0] \
+        if subject_ids.length == 1 && subject_ids.first.is_a?(Array)
+
+      get(:review_statistics, subject_ids: subject_ids)
     end
 
     protected

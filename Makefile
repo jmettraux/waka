@@ -20,11 +20,23 @@ assignments:
       -e "pp Waka::Session.new('.').assignments(6184, 5970)"
 as: assignments
 
+reviews:
+	$(RUBY) \
+      -Ilib -r pp -r waka \
+      -e "pp Waka::Session.new('.').reviews(6184, 5970)"
+rs: reviews
+
+rstatistics:
+	$(RUBY) \
+      -Ilib -r pp -r waka \
+      -e "pp Waka::Session.new('.').rstatistics(6184, 5970)"
+rss: rstatistics
+
 upcoming:
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html"
 	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html" > out.html
 u: upcoming
 
-.PHONY: summary subjects assignments upcoming
+.PHONY: summary subjects assignments reviews rstatistics upcoming
 
