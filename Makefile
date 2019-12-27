@@ -32,11 +32,19 @@ rstatistics:
       -e "pp Waka::Session.new('.').rstatistics(6184, 5970)"
 rss: rstatistics
 
+lprogressions:
+	$(RUBY) \
+      -Ilib -r pp -r waka \
+      -e "pp Waka::Session.new('.').lprogressions"
+lps: lprogressions
+
 upcoming:
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html"
 	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html" > out.html
 u: upcoming
 
-.PHONY: summary subjects assignments reviews rstatistics upcoming
+.PHONY: \
+  summary subjects assignments reviews rstatistics lprogressions \
+  upcoming
 

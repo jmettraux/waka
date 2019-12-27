@@ -17,6 +17,9 @@ td.id, td.level {
 td.id {
   font-size: 70%;
 }
+td.level.current {
+  font-weight: bold;
+}
 td.text {
   font-size: 147%;
   font-family: 'Kosugi Maru', sans-serif;

@@ -62,6 +62,11 @@ module Waka
       get(:review_statistics, subject_ids: subject_ids)
     end
 
+    def lprogressions
+
+      get(:level_progressions)
+    end
+
     protected
 
     def get(*as)
@@ -101,7 +106,9 @@ module Waka
       def upcoming
 
         session = Waka::Session.new('.')
+
         summary = session.summary
+        current_level = session.lprogressions['total_count']
 
         subject_ids = Set.new
 
@@ -125,6 +132,7 @@ module Waka
                 h[o['id']] =
                   { i: o['id'],
                     l: d['level'],
+                    cl: d['level'] == current_level,
                     o: o['object'][0, 1],
                     t: d['characters'],
                     ms: d['meanings'].map { |m| m['meaning'] },
@@ -223,7 +231,7 @@ module Waka
             puts '<td class="id">'
             puts s[:i]
             puts '</td>'
-            puts '<td class="level">'
+            puts "<td class=\"level #{s[:cl] ? 'current' : ''}\">"
             puts s[:l]
             puts '</td>'
             puts '<td class="text">'
