@@ -219,7 +219,7 @@ module Waka
         puts '<table>'
         upcoming.each do |time, subjects|
           puts '<tr>'
-          puts '<td class="time" colspan="6">'
+          puts '<td class="time" colspan="7">'
           puts time.to_s
           puts '</td>'
           puts '<td class="count" colspan="1">'
@@ -230,6 +230,9 @@ module Waka
             puts "<tr class=\"#{s[:o]}\">"
             puts '<td class="id">'
             puts s[:i]
+            puts '</td>'
+            puts '<td class="type">'
+            puts s[:o]
             puts '</td>'
             puts "<td class=\"level #{s[:cl] ? 'current' : ''}\">"
             puts s[:l]

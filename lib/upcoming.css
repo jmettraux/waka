@@ -17,6 +17,9 @@ td.id, td.level {
 td.id {
   font-size: 70%;
 }
+td.type {
+  font-size: 70%;
+}
 td.level.current {
   font-weight: bold;
 }
