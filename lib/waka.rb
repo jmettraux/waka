@@ -228,7 +228,7 @@ module Waka
           puts '</td>'
           puts '</tr>'
           subjects.each do |s|
-            puts "<tr class=\"#{s[:o]} l#{s[:l]}\">"
+            puts "<tr class=\"#{s[:o]} l#{s[:l]} #{s[:ssi]}\">"
             puts '<td class="id">'
             puts s[:i]
             puts '</td>'

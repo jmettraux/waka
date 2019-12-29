@@ -35,6 +35,9 @@ td.text {
   color: white;
   text-align: center;
 }
+td.srs {
+  cursor: pointer;
+}
 td.readings {
   font-size: 110%;
   font-family: 'Kosugi Maru', sans-serif;
