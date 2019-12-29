@@ -23,6 +23,9 @@ td.type {
   font-size: 70%;
   cursor: pointer;
 }
+td.level {
+  cursor: pointer;
+}
 td.level.current {
   font-weight: bold;
 }
