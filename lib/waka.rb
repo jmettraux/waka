@@ -219,7 +219,7 @@ module Waka
         puts '<body>'
         puts '<table class="upcoming">'
         upcoming.each do |time, subjects|
-          puts '<tr>'
+          puts '<tr class="time">'
           puts '<td class="time" colspan="7">'
           puts time.to_s
           puts '</td>'

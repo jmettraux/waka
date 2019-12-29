@@ -7,6 +7,10 @@
 
 .hidden { display: none; }
 
+table {
+  width: 100%;
+}
+
 td {
   font-family: Helvetica Neue;
 }
