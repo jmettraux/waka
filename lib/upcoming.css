@@ -12,7 +12,7 @@
 table {
   width: 100%;
 }
-tr:hover {
+tr:not(.time):hover {
   background-color: var(--tr-hover);
 }
 
