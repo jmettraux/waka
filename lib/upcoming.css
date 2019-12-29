@@ -5,6 +5,8 @@
   --vocabulary-colour: #a100f1;
 }
 
+.hidden { display: none; }
+
 td {
   font-family: Helvetica Neue;
 }
@@ -19,6 +21,7 @@ td.id {
 }
 td.type {
   font-size: 70%;
+  cursor: pointer;
 }
 td.level.current {
   font-weight: bold;

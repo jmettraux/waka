@@ -216,7 +216,8 @@ module Waka
         puts File.read(File.join(File.dirname(__FILE__), 'upcoming.css')) rescue ''
         puts '</style>'
         puts '</head>'
-        puts '<table>'
+        puts '<body>'
+        puts '<table class="upcoming">'
         upcoming.each do |time, subjects|
           puts '<tr>'
           puts '<td class="time" colspan="7">'
@@ -256,7 +257,12 @@ module Waka
           end
         end
         puts '</table>'
-        puts '<body>'
+        puts '<script>'
+        puts File.read(File.join(File.dirname(__FILE__), 'h-1.2.0.min.js'))
+        puts '</script>'
+        puts '<script>'
+        puts File.read(File.join(File.dirname(__FILE__), 'upcoming.js'))
+        puts '</script>'
         puts '</body>'
         puts '</html>'
       end
