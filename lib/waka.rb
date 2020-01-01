@@ -222,8 +222,9 @@ module Waka
         puts '<table class="upcoming">'
         upcoming.each do |time, subjects|
           puts '<tr class="time">'
-          puts '<td class="time" colspan="7">'
-          puts time.to_s
+          puts '<td colspan="3">'
+          puts '<td class="time" colspan="4">'
+          puts time.strftime('%F %R')
           puts '</td>'
           puts '<td class="count" colspan="1">'
           puts '<span class="size">'
