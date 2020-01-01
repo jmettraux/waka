@@ -66,3 +66,7 @@ tr.v td.text {
   background-color: var(--vocabulary-colour);
 }
 
+tr.time span.count {
+  font-size: 63%;
+}
+

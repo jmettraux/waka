@@ -207,6 +207,8 @@ module Waka
         types = %w[ r k t ] if types.empty?
         types = types.collect(&:to_s)
 
+        count = 0
+
         puts '<html>'
         puts '<head>'
         puts '<meta charset="utf-8" />'
@@ -224,7 +226,12 @@ module Waka
           puts time.to_s
           puts '</td>'
           puts '<td class="count" colspan="1">'
+          puts '<span class="size">'
           puts subjects.size.to_s
+          puts '</span>'
+          puts '<span class="count">'
+          puts "(#{count += subjects.size})"
+          puts '</span>'
           puts '</td>'
           puts '</tr>'
           subjects.each do |s|
