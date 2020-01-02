@@ -247,7 +247,11 @@ module Waka
             puts s[:l]
             puts '</td>'
             puts '<td class="text">'
-            puts s[:t]
+            if s[:o] == 'k'
+              puts "<a href=\"https://www.wanikani.com/kanji/#{s[:t]}\" target=\"_blank\">#{s[:t]}</a>"
+            else
+              puts s[:t]
+            end
             puts '</td>'
             puts '<td class="srs">'
             puts s[:ssi]

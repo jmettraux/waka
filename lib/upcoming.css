@@ -65,6 +65,10 @@ tr.k td.text {
 tr.v td.text {
   background-color: var(--vocabulary-colour);
 }
+td.text a {
+  color: white;
+  text-decoration: none;
+}
 
 tr.time td {
   padding-top: 0.56em;
