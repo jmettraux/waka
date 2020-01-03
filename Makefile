@@ -11,7 +11,7 @@ s: summary
 subjects:
 	$(RUBY) \
       -Ilib -r pp -r waka \
-      -e "pp Waka::Session.new('.').subjects(6184, 5970)"
+      -e "pp Waka::Session.new('.').subjects(6184, 5970, 306, 8792)"
 ss: subjects
 
 assignments:

@@ -59,6 +59,11 @@ td.pc {
 tr.r td.text {
   background-color: var(--radical-colour);
 }
+tr.r td.text img {
+  filter: brightness(0) invert(1);
+  height: 0.9em;
+  padding: 0.1em;
+}
 tr.k td.text {
   background-color: var(--kanji-colour);
 }

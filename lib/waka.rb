@@ -128,16 +128,28 @@ module Waka
           session.subjects(subject_ids)['data']
             .inject({}) { |h, o|
               begin
+
                 d = o['data']
+
+                t =
+                  d['characters']
+                ti =
+                  t ||
+                  d['character_images']
+                    .find { |ci| ci['metadata']['dimensions'] == '32x32' }
+                    .fetch('url')
+
                 h[o['id']] =
                   { i: o['id'],
                     l: d['level'],
                     cl: d['level'] == current_level,
                     o: o['object'][0, 1],
-                    t: d['characters'],
+                    t: t,
+                    ti: ti,
                     ms: d['meanings'].map { |m| m['meaning'] },
                     rs: (d['readings'].map { |r| r['reading'] } rescue nil),
                     pos: d['part_of_speech'] }
+
               rescue => err
                 puts "..."
                 pp o
@@ -284,6 +296,8 @@ module Waka
                         a href: "https://www.wanikani.com/kanji/#{s[:t]}", target: '_blank' do
                           s[:t]
                         end
+                      elsif s[:o] == 'r' && s[:t] == nil
+                        img src: s[:ti]
                       else
                         s[:t]
                       end
