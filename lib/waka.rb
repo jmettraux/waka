@@ -207,10 +207,14 @@ module Waka
           @tagname = tagname
           @attributes = args.find { |a| a.is_a?(Hash) } || {}
           @children = []
-          if block
-            r = instance_eval(&block)
-            @text = r.to_s unless r.is_a?(Html)
-          end
+          @text =
+            if block
+              r = instance_eval(&block)
+              r.is_a?(Html) ? nil : r.to_s
+            else
+              r = args.find { |a| ! a.is_a?(Hash) }
+              r != nil ? r.to_s : nil
+            end
         end
         def method_missing(m, *args, &block)
 #p m
@@ -253,7 +257,7 @@ module Waka
         puts Html.generate {
           head do
             meta charset: 'UTF-8'
-            title 'WK Upcoming'
+            title "WK Upcoming - #{u.first[0].strftime('%F %R')}"
             link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
             style do
               File.read(File.join(File.dirname(__FILE__), 'upcoming.css'))
