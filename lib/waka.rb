@@ -202,81 +202,104 @@ module Waka
         puts
       end
 
+      class Html
+        def initialize(tagname, args, &block)
+          @tagname = tagname
+          @attributes = args.find { |a| a.is_a?(Hash) } || {}
+          @children = []
+          if block
+            r = instance_eval(&block)
+            @text = r.to_s unless r.is_a?(Html)
+          end
+        end
+        def method_missing(m, *args, &block)
+#p m
+          @children << Html.new(m, args, &block)
+        end
+        def to_s
+          atts = @attributes
+            .map { |k, v|
+              v.is_a?(Array) ?
+              "#{k}=#{v.collect(&:to_s).join(' ').inspect}" :
+              "#{k}=#{v.to_s.inspect}" }
+            .join(' ')
+          atts =
+            ' ' + atts if @attributes.any?
+          s = "<#{@tagname}#{atts}>"
+          if @children.any?
+            s += "\n"
+            s += @children.collect(&:to_s).join
+          elsif @text
+            s += @text
+          else
+            # nada
+          end
+          s += "</#{@tagname}>\n"
+          s
+        end
+        def self.generate(&block)
+          Html.new(:html, {}, &block)
+        end
+      end
+
       def upcoming_html(*types)
 
         types = %w[ r k t ] if types.empty?
         types = types.collect(&:to_s)
 
         count = 0
+        u = upcoming
 
-        puts '<html>'
-        puts '<head>'
-        puts '<meta charset="utf-8" />'
-        puts '<title>WK Upcoming</title>'
-        puts '<link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">'
-        puts '<style>'
-        puts File.read(File.join(File.dirname(__FILE__), 'upcoming.css')) rescue ''
-        puts '</style>'
-        puts '</head>'
-        puts '<body>'
-        puts '<table class="upcoming">'
-        upcoming.each do |time, subjects|
-          puts '<tr class="time">'
-          puts '<td colspan="3">'
-          puts '<td class="time" colspan="4">'
-          puts time.strftime('%F %R')
-          puts '</td>'
-          puts '<td class="count" colspan="1">'
-          puts '<span class="size">'
-          puts subjects.size.to_s
-          puts '</span>'
-          puts '<span class="count">'
-          puts "(#{count += subjects.size})"
-          puts '</span>'
-          puts '</td>'
-          puts '</tr>'
-          subjects.each do |s|
-            puts "<tr class=\"#{s[:o]} l#{s[:l]} #{s[:ssi]}\">"
-            puts '<td class="id">'
-            puts s[:i]
-            puts '</td>'
-            puts '<td class="type">'
-            puts s[:o]
-            puts '</td>'
-            puts "<td class=\"level #{s[:cl] ? 'current' : ''}\">"
-            puts s[:l]
-            puts '</td>'
-            puts '<td class="text">'
-            if s[:o] == 'k'
-              puts "<a href=\"https://www.wanikani.com/kanji/#{s[:t]}\" target=\"_blank\">#{s[:t]}</a>"
-            else
-              puts s[:t]
+        puts Html.generate {
+          head do
+            meta charset: 'UTF-8'
+            title 'WK Upcoming'
+            link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
+            style do
+              File.read(File.join(File.dirname(__FILE__), 'upcoming.css'))
             end
-            puts '</td>'
-            puts '<td class="srs">'
-            puts s[:ssi]
-            puts '</td>'
-            puts '<td class="pc">'
-            puts "#{s[:pc]}%"
-            puts '</td>'
-            puts '<td class="readings">'
-            puts (s[:rs] || []).join(', ')
-            puts '</td>'
-            puts '<td class="meanings">'
-            puts s[:ms].join(', ')
-            puts '</td>'
-            puts '</tr>'
           end
-        end
-        puts '</table>'
-        puts '<script>'
-        puts File.read(File.join(File.dirname(__FILE__), 'h-1.2.0.min.js'))
-        puts '</script>'
-        puts '<script>'
-        puts File.read(File.join(File.dirname(__FILE__), 'upcoming.js'))
-        puts '</script>'
-        puts '</body>'
-        puts '</html>'
+          body do
+            table class: 'upcoming' do
+              u.each do |time, subjects|
+                tr class: 'time' do
+                  td colspan: 3
+                  td class: 'time', colspan: 4 do time.strftime('%F %R') end
+                  td class: 'count', colspan: 1 do
+                    span class: 'size' do subjects.size end
+                    span class: 'count' do count += subjects.size end
+                  end
+                end
+                subjects.each do |s|
+                  tr class: [ s[:o], s[:l], s[:ssi] ] do
+                    td class: 'id' do s[:i] end
+                    td class: 'type' do s[:o] end
+                    td class: [ 'level', s[:cl] ? 'current' : '' ] do s[:l] end
+                    td class: 'text' do
+                      if s[:o] == 'k'
+                        a href: "https://www.wanikani.com/kanji/#{s[:t]}", target: '_blank' do
+                          s[:t]
+                        end
+                      else
+                        s[:t]
+                      end
+                    end
+                    td class: 'srs' do s[:ssi] end
+                    td class: 'pc' do "#{s[:pc]}%" end
+                    td class: 'readings' do (s[:rs] || []).join(', ') end
+                    td class: 'meanings' do (s[:ms] || []).join(', ') end
+                  end
+                end
+              end
+            end
+            script do
+              File.read(File.join(File.dirname(__FILE__), 'h-1.2.0.min.js'))
+            end
+            script do
+              File.read(File.join(File.dirname(__FILE__), 'upcoming.js'))
+            end
+          end
+        }.to_s
       end
     end
   end
