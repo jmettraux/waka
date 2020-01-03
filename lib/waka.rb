@@ -257,7 +257,7 @@ module Waka
         puts Html.generate {
           head do
             meta charset: 'UTF-8'
-            title "WK Upcoming - #{u.first[0].strftime('%F %R')}"
+            title "WK Upcoming - #{u.first[0].strftime('%F %A %R')}"
             link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
             style do
               File.read(File.join(File.dirname(__FILE__), 'upcoming.css'))
@@ -268,7 +268,7 @@ module Waka
               u.each do |time, subjects|
                 tr class: 'time' do
                   td colspan: 3
-                  td class: 'time', colspan: 4 do time.strftime('%F %R') end
+                  td class: 'time', colspan: 4 do time.strftime('%F %A %R') end
                   td class: 'count', colspan: 1 do
                     span class: 'size' do subjects.size end
                     span class: 'count' do count += subjects.size end
