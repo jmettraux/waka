@@ -40,10 +40,15 @@ module Waka
 
     def assignments(*subject_ids)
 
-      subject_ids = subject_ids[0] \
-        if subject_ids.length == 1 && subject_ids.first.is_a?(Array)
+      query =
+        if subject_ids.first.is_a?(Hash)
+          subject_ids[0]
+        else
+          { subject_ids: subject_ids[0] }
+        end
 
-      get(:assignments, subject_ids: subject_ids)
+p query
+      get(:assignments, query)
     end
 
     def reviews(*subject_ids)
@@ -102,6 +107,17 @@ module Waka
   module Reports
 
     class << self
+
+      def apprentice
+
+        session = Waka::Session.new('.')
+
+        as = session
+          .assignments(
+            srs_stages: [ 1, 2, 3, 4 ],
+            subject_types: %w[ radical kanji ])
+          .fetch('data')
+      end
 
       def upcoming
 

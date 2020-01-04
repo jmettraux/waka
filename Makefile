@@ -38,6 +38,10 @@ lprogressions:
       -e "pp Waka::Session.new('.').lprogressions"
 lps: lprogressions
 
+apprentice:
+	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.apprentice"
+ace: apprentice
+
 upcoming:
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html"
