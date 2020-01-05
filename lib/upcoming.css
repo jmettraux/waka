@@ -7,6 +7,8 @@ tr:not(.time):hover {
 }
 
 td {
+  padding: 0.1em;
+  padding-left: 0.3em;
   font-family: var(--latin-font-family);
 }
 td.count {
@@ -59,6 +61,9 @@ tr.k td.text {
 }
 tr.v td.text {
   background-color: var(--vocabulary-colour);
+}
+td.text {
+  border: 0.01em solid white;
 }
 td.text a {
   color: white;

@@ -234,7 +234,7 @@ module Waka
             next unless types.include?(s[:o])
             printf(
               "%7d %2d %s %-9s %-12s %s\n",
-              s[:i], s[:l], s[:o], s[:t],
+              s[:sid], s[:l], s[:o], s[:t],
               (s[:rs] || []).join(', '), s[:ms].join(', '))
           end
         end
@@ -273,7 +273,7 @@ module Waka
                 end
                 subjects.each do |s|
                   tr class: [ s[:o], "l#{s[:l]}", s[:ssi] ] do
-                    td class: 'id' do s[:i] end
+                    td class: 'id' do s[:sid] end
                     td class: 'type' do s[:o] end
                     td class: [ 'level', s[:cl] ? 'current' : '' ] do s[:l] end
                     td class: 'text' do
