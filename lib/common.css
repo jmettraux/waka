@@ -1,0 +1,14 @@
+
+:root {
+  /* fonts */
+  --latin-font-family: Helvetica Neue;
+  --japanese-font-family: 'Kosugi Maru', sans-serif;
+  /* colours */
+  --radical-colour: #00a1f1;
+  --kanji-colour: #f100a1;
+  --vocabulary-colour: #a100f1;
+  --tr-hover: #f1f1f1;
+}
+
+.hidden { display: none; }
+

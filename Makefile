@@ -42,13 +42,21 @@ apprentice:
 	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.apprentice"
 ace: apprentice
 
+apprentice_html:
+	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.apprentice_html" > ap.html
+ah: apprentice_html
+
 upcoming:
+	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming"
+upc: upcoming
+
+upcoming_html:
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html"
-	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html" > out.html
-u: upcoming
+	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html" > up.html
+uh: upcoming_html
 
 .PHONY: \
   summary subjects assignments reviews rstatistics lprogressions \
-  upcoming
+  apprentice apprentice_html upcoming upcoming_html
 

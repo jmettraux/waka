@@ -142,7 +142,8 @@ module Waka
             .reject { |r|
               r[1].empty? }
 
-        subject_ids = subject_ids.to_a[0, 1000]
+        subject_ids = subject_ids.to_a
+        #subject_ids = subject_ids.to_a[0, 1000]
 
         subjects = {}
           #
@@ -197,6 +198,7 @@ module Waka
             title "WK Upcoming - #{u.first[0].strftime('%F %A %R')}"
             link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
             style do
+              File.read(File.join(File.dirname(__FILE__), 'common.css')) +
               File.read(File.join(File.dirname(__FILE__), 'upcoming.css'))
             end
           end

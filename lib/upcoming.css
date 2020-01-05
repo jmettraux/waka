@@ -1,14 +1,4 @@
 
-:root {
-  /* colours */
-  --radical-colour: #00a1f1;
-  --kanji-colour: #f100a1;
-  --vocabulary-colour: #a100f1;
-  --tr-hover: #f1f1f1;
-}
-
-.hidden { display: none; }
-
 table {
   width: 100%;
 }
@@ -17,7 +7,7 @@ tr:not(.time):hover {
 }
 
 td {
-  font-family: Helvetica Neue;
+  font-family: var(--latin-font-family);
 }
 td.count {
   text-align: right;
@@ -40,7 +30,7 @@ td.level.current {
 }
 td.text {
   font-size: 147%;
-  font-family: 'Kosugi Maru', sans-serif;
+  font-family: var(--japanese-font-family);
   color: white;
   text-align: center;
 }
@@ -49,7 +39,7 @@ td.srs {
 }
 td.readings {
   font-size: 110%;
-  font-family: 'Kosugi Maru', sans-serif;
+  font-family: var(--japanese-font-family);
 }
 td.pc {
   font-size: 70%;
