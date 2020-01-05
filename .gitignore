@@ -2,3 +2,10 @@
 .wanikani_api_token
 *.html
 
+*.swp
+.vimrc
+.viminfo
+.vimgrep
+.vimspec
+.vimmarks
+
