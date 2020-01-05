@@ -47,7 +47,6 @@ module Waka
           { subject_ids: subject_ids[0] }
         end
 
-p query
       get(:assignments, query)
     end
 
@@ -112,11 +111,16 @@ p query
 
         session = Waka::Session.new('.')
 
-        as = session
+        subjects = {}
+
+        apprentices = session
           .assignments(
             srs_stages: [ 1, 2, 3, 4 ],
             subject_types: %w[ radical kanji ])
-          .fetch('data')
+
+        merge!(subjects, apprentices)
+        merge!(subjects, session.subjects(subjects.keys))
+        merge!(subjects, session.rstatistics(subjects.keys))
       end
 
       def upcoming
@@ -140,62 +144,11 @@ p query
 
         subject_ids = subject_ids.to_a[0, 1000]
 
-        subjects =
-          session.subjects(subject_ids)['data']
-            .inject({}) { |h, o|
-              begin
-
-                d = o['data']
-
-                t =
-                  d['characters']
-                ti =
-                  t ||
-                  d['character_images']
-                    .find { |ci| ci['metadata']['dimensions'] == '32x32' }
-                    .fetch('url')
-
-                h[o['id']] =
-                  { i: o['id'],
-                    l: d['level'],
-                    cl: d['level'] == current_level,
-                    o: o['object'][0, 1],
-                    t: t,
-                    ti: ti,
-                    ms: d['meanings'].map { |m| m['meaning'] },
-                    rs: (d['readings'].map { |r| r['reading'] } rescue nil),
-                    pos: d['part_of_speech'] }
-
-              rescue => err
-                puts "..."
-                pp o
-                p err
-              end
-              h }
-
-        session.assignments(subject_ids)['data']
-          .each { |a|
-
-            d = a['data']
-
-            ss = d['srs_stage']
-            ssn = d['srs_stage_name']
-            next unless ssn
-            ssi = ssn[0, 1] + ss.to_s
-            ssi = ssi.downcase if ssn.match(/^A/)
-
-            subjects[d['subject_id']].merge!({ ss: ss, ssn: ssn, ssi: ssi }) }
-
-        session.rstatistics(subject_ids)['data']
-          .each { |a|
-            d = a['data']
-            subjects[d['subject_id']]
-              .merge!({
-                mc: d['meaning_correct'], mi: d['meaning_incorrect'],
-                mms: d['meaning_max_streak'], mcs: d['meaning_current_streak'],
-                rc: d['reading_correct'], ri: d['reading_incorrect'],
-                rms: d['reading_max_streak'], rcs: d['reading_current_streak'],
-                pc: d['percentage_correct'] }) }
+        subjects = {}
+          #
+        merge!(subjects, session.subjects(subject_ids))
+        merge!(subjects, session.assignments(subject_ids))
+        merge!(subjects, session.rstatistics(subject_ids))
 
         reviews.each do |r|
           r[1] = r[1]
@@ -228,50 +181,6 @@ p query
           end
         end
         puts
-      end
-
-      class Html
-        def initialize(tagname, args, &block)
-          @tagname = tagname
-          @attributes = args.find { |a| a.is_a?(Hash) } || {}
-          @children = []
-          @text =
-            if block
-              r = instance_eval(&block)
-              r.is_a?(Html) ? nil : r.to_s
-            else
-              r = args.find { |a| ! a.is_a?(Hash) }
-              r != nil ? r.to_s : nil
-            end
-        end
-        def method_missing(m, *args, &block)
-#p m
-          @children << Html.new(m, args, &block)
-        end
-        def to_s
-          atts = @attributes
-            .map { |k, v|
-              v.is_a?(Array) ?
-              "#{k}=#{v.collect(&:to_s).join(' ').inspect}" :
-              "#{k}=#{v.to_s.inspect}" }
-            .join(' ')
-          atts =
-            ' ' + atts if @attributes.any?
-          s = "<#{@tagname}#{atts}>"
-          if @children.any?
-            s += "\n"
-            s += @children.collect(&:to_s).join
-          elsif @text
-            s += @text
-          else
-            # nada
-          end
-          s += "</#{@tagname}>\n"
-          s
-        end
-        def self.generate(&block)
-          Html.new(:html, {}, &block)
-        end
       end
 
       def upcoming_html(*types)
@@ -334,6 +243,123 @@ p query
             end
           end
         }.to_s
+      end
+
+      protected
+
+      def merge!(subjects, elts)
+
+        elts = elts['data'] if elts['data'].is_a?(Array)
+
+        o =
+          case obj = elts.first['object']
+          when 'kanji', 'radical', 'vocabulary' then 'subject'
+          else obj
+          end
+
+        m = "#{o}_to_h"
+
+        elts.each { |e|
+          h = send(m, e)
+          s = (subjects[h[:sid]] ||= {})
+          s.merge!(h) }
+
+        subjects
+      end
+
+      def assignment_to_h(a)
+
+        d = a['data']
+
+        sid = d['subject_id']
+        ss = d['srs_stage']
+        ssn = d['srs_stage_name']
+
+        ssi = ssn[0, 1] + ss.to_s
+        ssi = ssi.downcase if ssn.match(/^A/)
+
+        aa = Time.parse(d['available_at']).localtime
+
+        { sid: sid, ss: ss, ssn: ssn, ssi: ssi, aa: aa }
+      end
+
+      def subject_to_h(s)
+
+        d = s['data']
+
+        t =
+          d['characters']
+        ti =
+          t ||
+          d['character_images']
+            .find { |ci| ci['metadata']['dimensions'] == '32x32' }
+            .fetch('url')
+
+        { sid: s['id'],
+          l: d['level'],
+          #cl: d['level'] == current_level,
+          o: s['object'][0, 1],
+          t: t,
+          ti: ti,
+          ms: d['meanings'].map { |m| m['meaning'] },
+          rs: (d['readings'].map { |r| r['reading'] } rescue nil),
+          pos: d['part_of_speech'] }
+      end
+
+      def review_statistic_to_h(s)
+
+        d = s['data']
+
+        { sid: d['subject_id'],
+          mc: d['meaning_correct'], mi: d['meaning_incorrect'],
+          mms: d['meaning_max_streak'], mcs: d['meaning_current_streak'],
+          rc: d['reading_correct'], ri: d['reading_incorrect'],
+          rms: d['reading_max_streak'], rcs: d['reading_current_streak'],
+          pc: d['percentage_correct'] }
+      end
+
+      class Html
+        def initialize(tagname, args, &block)
+          @tagname = tagname
+          @attributes = args.find { |a| a.is_a?(Hash) } || {}
+          @children = []
+          @text =
+            if block
+              r = instance_eval(&block)
+              r.is_a?(Html) ? nil : r.to_s
+            else
+              r = args.find { |a| ! a.is_a?(Hash) }
+              r != nil ? r.to_s : nil
+            end
+        end
+        def method_missing(m, *args, &block)
+#p m
+          @children << Html.new(m, args, &block)
+        end
+        def to_s
+          atts = @attributes
+            .map { |k, v|
+              v.is_a?(Array) ?
+              "#{k}=#{v.collect(&:to_s).join(' ').inspect}" :
+              "#{k}=#{v.to_s.inspect}" }
+            .join(' ')
+          atts =
+            ' ' + atts if @attributes.any?
+          s = "<#{@tagname}#{atts}>"
+          if @children.any?
+            s += "\n"
+            s += @children.collect(&:to_s).join
+          elsif @text
+            s += @text
+          else
+            # nada
+          end
+          s += "</#{@tagname}>\n"
+          s
+        end
+        def self.generate(&block)
+          Html.new(:html, {}, &block)
+        end
       end
     end
   end
