@@ -123,6 +123,60 @@ module Waka
         merge!(subjects, session.rstatistics(subjects.keys))
       end
 
+      def apprentice_html
+
+        subjects = apprentice
+          .values
+          .sort_by { |s| - s[:l] }
+
+        Html.generate {
+          head do
+            meta charset: 'UTF-8'
+            title "WK Apprentice"
+            link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
+            style do
+              File.read(File.join(File.dirname(__FILE__), 'common.css')) +
+              File.read(File.join(File.dirname(__FILE__), 'apprentice.css'))
+            end
+          end
+          body do
+            subjects.each do |s|
+              div k: [ 'subject', s[:o], "l#{s[:l]}", s[:ssi] ] do
+                div k: 'west' do
+                  div k: 'text' do
+                    s[:t]
+                  end
+                end
+                div k: 'east' do
+                  div k: 'level' do s[:l]; end
+                  div k: 'ssi' do s[:ssi]; end
+                  div k: 'pc' do "#{s[:pc]}%"; end
+                  div k: 'readings' do
+                    s[:rs].each do |r|
+                      div k: 'reading' do r; end
+                    end if s[:rs]
+                  end
+                  div k: 'meanings' do
+                    s[:ms].each do |m|
+                      div k: 'meaning' do m; end
+                    end
+                  end
+                  div k: 'next' do
+                    s[:aa].strftime('%F %A %R')
+                  end
+                end
+              end
+            end
+            script do
+              File.read(File.join(File.dirname(__FILE__), 'h-1.2.0.min.js'))
+            end
+            script do
+              File.read(File.join(File.dirname(__FILE__), 'apprentice.js'))
+            end
+          end
+        }.to_s
+      end
+
       def upcoming
 
         session = Waka::Session.new('.')
@@ -192,7 +246,7 @@ module Waka
         count = 0
         u = upcoming
 
-        puts Html.generate {
+        Html.generate {
           head do
             meta charset: 'UTF-8'
             title "WK Upcoming - #{u.first[0].strftime('%F %A %R')}"
@@ -341,6 +395,7 @@ module Waka
         def to_s
           atts = @attributes
             .map { |k, v|
+              k = 'class' if k == :k
               v.is_a?(Array) ?
               "#{k}=#{v.collect(&:to_s).join(' ').inspect}" :
               "#{k}=#{v.to_s.inspect}" }

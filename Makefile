@@ -43,7 +43,7 @@ apprentice:
 ace: apprentice
 
 apprentice_html:
-	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.apprentice_html" > ap.html
+	$(RUBY) -Ilib -r pp -r waka -e "puts Waka::Reports.apprentice_html" > ap.html
 ah: apprentice_html
 
 upcoming:
@@ -53,7 +53,7 @@ upc: upcoming
 upcoming_html:
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_text(:r, :k)"
 	#$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html"
-	$(RUBY) -Ilib -r pp -r waka -e "pp Waka::Reports.upcoming_html" > up.html
+	$(RUBY) -Ilib -r pp -r waka -e "puts Waka::Reports.upcoming_html" > up.html
 uh: upcoming_html
 
 .PHONY: \
