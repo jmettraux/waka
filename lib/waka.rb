@@ -135,34 +135,37 @@ module Waka
             title "WK Apprentice"
             link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
             style do
+              File.read(File.join(File.dirname(__FILE__), 'reset.css')) +
               File.read(File.join(File.dirname(__FILE__), 'common.css')) +
               File.read(File.join(File.dirname(__FILE__), 'apprentice.css'))
             end
           end
           body do
             subjects.each do |s|
-              div k: [ 'subject', s[:o], "l#{s[:l]}", s[:ssi] ] do
-                div k: 'west' do
-                  div k: 'text' do
-                    s[:t]
-                  end
-                end
-                div k: 'east' do
-                  div k: 'level' do s[:l]; end
-                  div k: 'ssi' do s[:ssi]; end
-                  div k: 'pc' do "#{s[:pc]}%"; end
-                  div k: 'readings' do
-                    s[:rs].each do |r|
-                      div k: 'reading' do r; end
-                    end if s[:rs]
-                  end
-                  div k: 'meanings' do
-                    s[:ms].each do |m|
-                      div k: 'meaning' do m; end
+              table k: [ 'subject', s[:o], "l#{s[:l]}", s[:ssi] ] do
+                tr do
+                  td k: 'east' do
+                    div k: 'text' do
+                      s[:t]
                     end
                   end
-                  div k: 'next' do
-                    s[:aa].strftime('%F %A %R')
+                  td k: 'west' do
+                    div k: 'level' do s[:l]; end
+                    div k: 'ssi' do s[:ssi]; end
+                    div k: 'pc' do "#{s[:pc]}%"; end
+                    div k: 'readings' do
+                      s[:rs].each do |r|
+                        div k: 'reading' do r; end
+                      end if s[:rs]
+                    end
+                    div k: 'meanings' do
+                      s[:ms].each do |m|
+                        div k: 'meaning' do m; end
+                      end
+                    end
+                    div k: 'next' do
+                      s[:aa].strftime('%F %A %R')
+                    end
                   end
                 end
               end
@@ -252,6 +255,7 @@ module Waka
             title "WK Upcoming - #{u.first[0].strftime('%F %A %R')}"
             link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
             style do
+              File.read(File.join(File.dirname(__FILE__), 'reset.css')) +
               File.read(File.join(File.dirname(__FILE__), 'common.css')) +
               File.read(File.join(File.dirname(__FILE__), 'upcoming.css'))
             end

@@ -1,2 +1,22 @@
 
+body {
+  width: 100%;
+}
+table.subject {
+  width: 24%;
+  display: inline-block;
+  vertical-align: top;
+}
+td.east {
+  vertical-align: top;
+  padding: 0.21em;
+}
+td.east .text {
+  font-size: 210%;
+  font-family: var(--japanese-font-family);
+  color: white;
+  text-align: center;
+}
+.r .east { background-color: var(--radical-colour); }
+.k .east { background-color: var(--kanji-colour); }
 
