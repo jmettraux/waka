@@ -38,6 +38,7 @@ td.text {
 }
 td.srs {
   cursor: pointer;
+  text-align: center;
 }
 td.readings {
   font-size: 110%;
@@ -45,7 +46,7 @@ td.readings {
 }
 td.pc {
   font-size: 70%;
-  text-align: right;
+  text-align: center;
 }
 
 tr.r td.text {
