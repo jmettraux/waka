@@ -249,6 +249,8 @@ module Waka
         count = 0
         u = upcoming
 
+        max_level = u.collect(&:last).flatten(1).collect { |s| s[:l] }.max
+
         Html.generate {
           head do
             meta charset: 'UTF-8'
@@ -275,7 +277,7 @@ module Waka
                   tr class: [ s[:o], "l#{s[:l]}", s[:ssi] ] do
                     td class: 'id' do s[:sid] end
                     td class: 'type' do s[:o] end
-                    td class: [ 'level', s[:cl] ? 'current' : '' ] do s[:l] end
+                    td class: [ 'level', s[:l] == max_level ? 'current' : nil ].compact do s[:l] end
                     td class: 'text' do
                       if s[:o] == 'k'
                         a href: "https://www.wanikani.com/kanji/#{s[:t]}", target: '_blank' do
