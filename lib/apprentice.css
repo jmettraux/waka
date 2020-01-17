@@ -2,21 +2,48 @@
 body {
   width: 100%;
 }
+
 table.subject {
+  font-family: var(--latin-font-family);
   width: 24%;
   display: inline-block;
   vertical-align: top;
+  /*
+  height: 8em;
+  */
 }
-td.east {
+
+td.west {
+  width: 2em;
   vertical-align: top;
   padding: 0.21em;
 }
-td.east .text {
+td.west .text {
   font-size: 210%;
   font-family: var(--japanese-font-family);
   color: white;
   text-align: center;
 }
-.r .east { background-color: var(--radical-colour); }
-.k .east { background-color: var(--kanji-colour); }
+.r .west { background-color: var(--radical-colour); }
+.k .west { background-color: var(--kanji-colour); }
+
+td.east {
+  padding-left: 0.28em;
+}
+.level, .ssi, .pc {
+  display: inline-block;
+  margin-right: 0.42em;
+}
+.next {
+  display: inline-block;
+  font-size: 77%;
+}
+
+.r img {
+  filter: brightness(0) invert(1);
+  height: 0.9em;
+  /*
+  padding: 0.1em;
+  */
+}
 

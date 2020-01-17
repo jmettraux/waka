@@ -144,27 +144,31 @@ module Waka
             subjects.each do |s|
               table k: [ 'subject', s[:o], "l#{s[:l]}", s[:ssi] ] do
                 tr do
-                  td k: 'east' do
+                  td k: 'west' do
                     div k: 'text' do
-                      s[:t]
+                      if s[:t]
+                        s[:t]
+                      else
+                        img src: s[:ti]
+                      end
                     end
                   end
-                  td k: 'west' do
+                  td k: 'east' do
                     div k: 'level' do s[:l]; end
                     div k: 'ssi' do s[:ssi]; end
                     div k: 'pc' do "#{s[:pc]}%"; end
+                    div k: 'next' do
+                      #s[:aa].strftime('%F %A %R')
+                      s[:aa].strftime('%a %d %R')
+                    end
                     div k: 'readings' do
-                      s[:rs].each do |r|
-                        div k: 'reading' do r; end
-                      end if s[:rs]
+                      #s[:rs].each do |r|
+                      #  div k: 'reading' do r; end
+                      #end if s[:rs]
+                      s[:rs] ? s[:rs].join(', ') : '&nbsp;'
                     end
                     div k: 'meanings' do
-                      s[:ms].each do |m|
-                        div k: 'meaning' do m; end
-                      end
-                    end
-                    div k: 'next' do
-                      s[:aa].strftime('%F %A %R')
+                      s[:ms].join(', ')
                     end
                   end
                 end
