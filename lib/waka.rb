@@ -129,6 +129,10 @@ module Waka
           .values
           .sort_by { |s| - s[:l] }
 
+        initial_level = subjects.first[:l]
+        #previous_level = subjects.first[:l]
+        #level_counts = { r: 0, k: 0 }
+
         Html.generate {
           head do
             meta charset: 'UTF-8'
@@ -142,6 +146,24 @@ module Waka
           end
           body do
             subjects.each do |s|
+              #if s[:l] != previous_level
+              #  pl = previous_level; previous_level = s[:l]
+              #  cs = level_counts; level_counts = { r: 0 , k: 0 }
+              #  ''
+              #  div k: 'level-end' do
+              #    div k: 'level' do
+              #      previous_level
+              #    end
+              #    div k: 'counts' do
+              #      "r#{cs[:r]} k#{cs[:k]}"
+              #    end
+              #  end
+              #end
+              #level_counts[s[:o].to_sym] += 1
+              if initial_level && s[:l] != initial_level
+                initial_level = false
+                br
+              end
               table k: [ 'subject', s[:o], "l#{s[:l]}", s[:ssi] ] do
                 tr do
                   td k: 'west' do
