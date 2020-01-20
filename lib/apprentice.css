@@ -5,6 +5,34 @@ body {
   font-family: var(--latin-font-family);
 }
 
+.level {
+  /*
+  background-color: lightgrey;
+  */
+  margin-bottom: 0.28em;
+}
+.subject {
+  display: inline-block;
+}
+.text {
+  font-size: 210%;
+  font-family: var(--japanese-font-family);
+  color: white;
+  text-align: center;
+  padding: 0.14em;
+  margin-bottom: 0.14em;
+}
+.r .text { background-color: var(--radical-colour); }
+.k .text { background-color: var(--kanji-colour); }
+.r img {
+  filter: brightness(0) invert(1);
+  height: 0.9em;
+  /*
+  padding: 0.1em;
+  /
+}
+
+/*
 .level-end {
   width: 24%;
   display: inline-block;
@@ -14,13 +42,13 @@ body {
 table.subject {
   /*
   font-family: var(--latin-font-family);
-  */
+  /
   width: 24%;
   display: inline-block;
   vertical-align: top;
   /*
   height: 8em;
-  */
+  /
 }
 
 td.west {
@@ -56,6 +84,7 @@ table.subject tr:hover td.east { color: black; }
   height: 0.9em;
   /*
   padding: 0.1em;
-  */
+  /
 }
+*/
 

@@ -125,13 +125,9 @@ module Waka
 
       def apprentice_html
 
-        subjects = apprentice
-          .values
-          .sort_by { |s| - s[:l] }
-
-        initial_level = subjects.first[:l]
-        #previous_level = subjects.first[:l]
-        #level_counts = { r: 0, k: 0 }
+        subjects = apprentice.values.sort_by { |s| s[:aa].to_f }
+        max_level = subjects.collect { |s| s[:l] }.max
+        levels = subjects.partition { |s| s[:l] == max_level }
 
         Html.generate {
           head do
@@ -145,28 +141,10 @@ module Waka
             end
           end
           body do
-            subjects.each do |s|
-              #if s[:l] != previous_level
-              #  pl = previous_level; previous_level = s[:l]
-              #  cs = level_counts; level_counts = { r: 0 , k: 0 }
-              #  ''
-              #  div k: 'level-end' do
-              #    div k: 'level' do
-              #      previous_level
-              #    end
-              #    div k: 'counts' do
-              #      "r#{cs[:r]} k#{cs[:k]}"
-              #    end
-              #  end
-              #end
-              #level_counts[s[:o].to_sym] += 1
-              if initial_level && s[:l] != initial_level
-                initial_level = false
-                br
-              end
-              table k: [ 'subject', s[:o], "l#{s[:l]}", s[:ssi] ] do
-                tr do
-                  td k: 'west' do
+            levels.each do |ss|
+              div k: [ 'level', ss.first[:l] == max_level ? 'current' : 'old' ] do
+                ss.each do |s|
+                  div k: [ 'subject', s[:o], s[:ssi] ], "data-subject-id": s[:sid].to_s do
                     div k: 'text' do
                       if s[:t]
                         s[:t]
@@ -175,22 +153,37 @@ module Waka
                       end
                     end
                   end
-                  td k: 'east' do
-                    div k: 'level' do s[:l]; end
-                    div k: 'ssi' do s[:ssi]; end
-                    div k: 'pc' do "#{s[:pc]}%"; end
-                    div k: 'next' do
-                      #s[:aa].strftime('%F %A %R')
-                      s[:aa].strftime('%a %d %R')
+                end
+              end
+            end
+            #        div k: 'level' do s[:l]; end
+            #        div k: 'ssi' do s[:ssi]; end
+            #        div k: 'pc' do "#{s[:pc]}%"; end
+            #        div k: 'next' do
+            #          #s[:aa].strftime('%F %A %R')
+            #          s[:aa].strftime('%a %d %R')
+            #        end
+            #        div k: 'readings' do
+            #          #s[:rs].each do |r|
+            #          #  div k: 'reading' do r; end
+            #          #end if s[:rs]
+            #          s[:rs] ? s[:rs].join(', ') : '&nbsp;'
+            #        end
+            #        div k: 'meanings' do
+            #          s[:ms].join(', ')
+            #        end
+            levels.each do |ss|
+              ss.each do |s|
+                div id: "s#{s[:sid]}", k: [ 'subject-detail', 'hidden' ] do
+                  table do
+                    tr k: 'data' do
+                      td k: 'level' do; s[:l]; end
+                      td k: 'ssi' do; s[:ssi]; end
+                      td k: 'pc' do; "#{s[:pc]}%"; end
                     end
-                    div k: 'readings' do
-                      #s[:rs].each do |r|
-                      #  div k: 'reading' do r; end
-                      #end if s[:rs]
-                      s[:rs] ? s[:rs].join(', ') : '&nbsp;'
+                    tr k: 'readings' do
                     end
-                    div k: 'meanings' do
-                      s[:ms].join(', ')
+                    tr k: 'meanings' do
                     end
                   end
                 end
