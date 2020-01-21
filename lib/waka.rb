@@ -156,34 +156,25 @@ module Waka
                 end
               end
             end
-            #        div k: 'level' do s[:l]; end
-            #        div k: 'ssi' do s[:ssi]; end
-            #        div k: 'pc' do "#{s[:pc]}%"; end
-            #        div k: 'next' do
-            #          #s[:aa].strftime('%F %A %R')
-            #          s[:aa].strftime('%a %d %R')
-            #        end
-            #        div k: 'readings' do
-            #          #s[:rs].each do |r|
-            #          #  div k: 'reading' do r; end
-            #          #end if s[:rs]
-            #          s[:rs] ? s[:rs].join(', ') : '&nbsp;'
-            #        end
-            #        div k: 'meanings' do
-            #          s[:ms].join(', ')
-            #        end
             levels.each do |ss|
               ss.each do |s|
-                div id: "s#{s[:sid]}", k: [ 'subject-detail', 'hidden' ] do
+                div id: "s#{s[:sid]}", k: [ 'subject-detail', s[:o], 'hidden' ] do
                   table do
                     tr k: 'data' do
                       td k: 'level' do; s[:l]; end
                       td k: 'ssi' do; s[:ssi]; end
                       td k: 'pc' do; "#{s[:pc]}%"; end
+                      td k: 'next' do; s[:aa].strftime('%a %d %R'); end
                     end
-                    tr k: 'readings' do
-                    end
-                    tr k: 'meanings' do
+                    tr do
+                      td k: 'readings', colspan: 2 do
+                        s[:rs] ?
+                          s[:rs].each { |r| div k: 'reading' do; r; end } :
+                          '&nbsp;'
+                      end
+                      td k: 'meanings',  colspan: 2 do
+                        s[:ms].join(', ')
+                      end
                     end
                   end
                 end
