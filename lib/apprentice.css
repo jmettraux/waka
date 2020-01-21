@@ -1,6 +1,5 @@
 
 body {
-  width: 100%;
   padding: 0.28em;
   font-family: var(--latin-font-family);
 }
@@ -21,6 +20,10 @@ body {
   text-align: center;
   padding: 0.14em;
   margin-bottom: 0.14em;
+  border: 2px solid white;
+}
+.subject.selected .text {
+  border: 2px solid black;
 }
 .r .text { background-color: var(--radical-colour); }
 .k .text { background-color: var(--kanji-colour); }

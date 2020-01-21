@@ -158,7 +158,7 @@ module Waka
             end
             levels.each do |ss|
               ss.each do |s|
-                div id: "s#{s[:sid]}", k: [ 'subject-detail', s[:o], 'hidden' ] do
+                div k: [ 'subject-detail', s[:o], 'hidden' ], "data-subject-id": s[:sid] do
                   table do
                     tr k: 'data' do
                       td k: 'level' do; s[:l]; end
