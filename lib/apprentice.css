@@ -13,7 +13,7 @@ body {
 .subject {
   display: inline-block;
 }
-.text {
+.subject .text {
   font-size: 210%;
   font-family: var(--japanese-font-family);
   color: white;
@@ -43,22 +43,34 @@ body {
   margin: 0 auto;
   margin-top: 3.5em;
   width: 70%;
+  /*
   table-layout: fixed;
-  min-height: 28em;
+  */
+  min-height: 21em;
 }
 .subject-detail.r table { background-color: var(--radical-colour); }
 .subject-detail.k table { background-color: var(--kanji-colour); }
 .subject-detail td {
   font-size: 140%;
   text-align: center;
-  padding: 1.4em;
   color: white;
+  vertical-align: middle;
+  /*
+  padding: 1.4em;
+  */
+}
+.subject-detail td[rowspan] {
+  font-size: 1500%;
+  width: 32%;
+}
+tr.data td:not(.text) {
+  padding: 1.4em;
 }
 td.readings {
   font-family: var(--japanese-font-family);
   font-size: 280%;
 }
-.reading {
+td.readings .reading {
   margin-bottom: 0.28em;
 }
 td.meanings {
