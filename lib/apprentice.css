@@ -81,5 +81,6 @@ td.readings .reading {
 td.meanings {
   font-family: var(--latin-font-family);
   font-size: 210%;
+  padding-right: 0.49em;
 }
 

@@ -156,16 +156,10 @@ module Waka
               ss.each do |s|
                 div k: [ 'subject-detail', s[:o], 'hidden' ], "data-subject-id": s[:sid] do
                   table do
-                    tr k: 'data' do
+                    tr do
                       td k: 'text', rowspan: '2' do
                         s[:t] ? s[:t] : img(src: s[:ti])
                       end
-                      td k: 'level' do; s[:l]; end
-                      td k: 'ssi' do; s[:ssi]; end
-                      td k: 'pc' do; "#{s[:pc]}%"; end
-                      td k: 'next' do; s[:aa].strftime('%a %d %R'); end
-                    end
-                    tr do
                       td k: 'readings', colspan: 2 do
                         s[:rs] ?
                           s[:rs].each { |r| div k: 'reading' do; r; end } :
@@ -174,6 +168,12 @@ module Waka
                       td k: 'meanings',  colspan: 2 do
                         s[:ms].join(', ')
                       end
+                    end
+                    tr k: 'data' do
+                      td k: 'level' do; s[:l]; end
+                      td k: 'ssi' do; s[:ssi]; end
+                      td k: 'pc' do; "#{s[:pc]}%"; end
+                      td k: 'next' do; s[:aa].strftime('%a %d %R'); end
                     end
                   end
                 end
