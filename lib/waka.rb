@@ -132,7 +132,7 @@ module Waka
         Html.generate {
           head do
             meta charset: 'UTF-8'
-            title "WK Apprentice"
+            title "WK Apprentice - #{Time.now.strftime('%F %A %R')}"
             link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
             style do
               File.read(File.join(File.dirname(__FILE__), 'reset.css')) +

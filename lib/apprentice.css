@@ -60,11 +60,16 @@ body {
   */
 }
 .subject-detail td[rowspan] {
+  padding-left: 0.14em;
   font-size: 1500%;
   width: 32%;
+  /*
+  font-family: var(--japanese-font-family);
+  */
 }
 tr.data td:not(.text) {
   padding: 1.4em;
+  opacity: 0.35;
 }
 td.readings {
   font-family: var(--japanese-font-family);
