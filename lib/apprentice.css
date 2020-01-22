@@ -20,13 +20,18 @@ body {
   text-align: center;
   padding: 0.14em;
   margin-bottom: 0.14em;
-  border: 2px solid white;
+}
+.r .text {
+  border: 4px solid var(--radical-colour);
+  background-color: var(--radical-colour);
+}
+.k .text {
+  border: 4px solid var(--kanji-colour);
+  background-color: var(--kanji-colour);
 }
 .subject.selected .text {
-  border: 2px solid black;
+  border: 4px solid white;
 }
-.r .text { background-color: var(--radical-colour); }
-.k .text { background-color: var(--kanji-colour); }
 .r img {
   filter: brightness(0) invert(1);
   height: 0.9em;
@@ -39,7 +44,6 @@ body {
   width: 100%;
 }
 .subject-detail table {
-  border: 1px solid black;
   margin: 0 auto;
   margin-top: 3.5em;
   width: 70%;
@@ -74,6 +78,7 @@ tr.data td:not(.text) {
 td.readings {
   font-family: var(--japanese-font-family);
   font-size: 280%;
+  padding-top: 1.4em;
 }
 td.readings .reading {
   margin-bottom: 0.28em;

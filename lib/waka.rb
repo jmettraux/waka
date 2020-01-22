@@ -161,9 +161,9 @@ module Waka
                         s[:t] ? s[:t] : img(src: s[:ti])
                       end
                       td k: 'readings', colspan: 2 do
-                        s[:rs] ?
-                          s[:rs].each { |r| div k: 'reading' do; r; end } :
-                          '&nbsp;'
+                        rs = s[:rs] || []
+                        rs << '&nbsp;' while rs.size < 4
+                        rs.each { |r| div k: 'reading' do; r; end }
                       end
                       td k: 'meanings',  colspan: 2 do
                         s[:ms].join(', ')
