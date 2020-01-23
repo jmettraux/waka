@@ -307,7 +307,9 @@ module Waka
                           s[:t]
                         end
                       else
-                        s[:t]
+                        a href: "https://www.wanikani.com/vocabulary/#{s[:t]}", target: '_blank' do
+                          s[:t]
+                        end
                       end
                     end
                     td class: 'srs' do s[:ssi] end
