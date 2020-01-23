@@ -149,7 +149,10 @@ module Waka
                       s[:t] ? s[:t] : img(src: s[:ti])
                     end
                     div k: 'ssi' do
-                      s[:ssi][1..-1]
+                      '|' * s[:ssi][1..-1].to_i
+                    end
+                    div k: 'next' do
+                      Time.now.day == s[:aa].day ? s[:aa].strftime('%H') : ''
                     end
                   end
                 end

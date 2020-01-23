@@ -25,10 +25,18 @@ body {
 .subject .ssi {
   position: absolute;
   right: 0;
-  top: 0;
   color: white;
   font-size: 63%;
-  padding: 0.21em;
+  padding: 0.14em;
+  top: 0;
+}
+.subject .next {
+  position: absolute;
+  right: 0;
+  color: white;
+  font-size: 63%;
+  padding: 0.14em;
+  bottom: 0.35em;
 }
 .r .text {
   border: 7px solid var(--radical-colour);
@@ -41,6 +49,8 @@ body {
 .subject.selected .text {
   border: 7px solid white;
 }
+.subject.selected .ssi { display: none; }
+.subject.selected .next { display: none; }
 .r img {
   filter: brightness(0) invert(1);
   height: 0.9em;
