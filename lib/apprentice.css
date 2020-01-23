@@ -12,6 +12,7 @@ body {
 }
 .subject {
   display: inline-block;
+  position: relative;
 }
 .subject .text {
   font-size: 210%;
@@ -21,16 +22,24 @@ body {
   padding: 0.14em;
   margin-bottom: 0.14em;
 }
+.subject .ssi {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: white;
+  font-size: 63%;
+  padding: 0.21em;
+}
 .r .text {
-  border: 4px solid var(--radical-colour);
+  border: 7px solid var(--radical-colour);
   background-color: var(--radical-colour);
 }
 .k .text {
-  border: 4px solid var(--kanji-colour);
+  border: 7px solid var(--kanji-colour);
   background-color: var(--kanji-colour);
 }
 .subject.selected .text {
-  border: 4px solid white;
+  border: 7px solid white;
 }
 .r img {
   filter: brightness(0) invert(1);

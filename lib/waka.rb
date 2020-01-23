@@ -148,6 +148,9 @@ module Waka
                     div k: 'text' do
                       s[:t] ? s[:t] : img(src: s[:ti])
                     end
+                    div k: 'ssi' do
+                      s[:ssi][1..-1]
+                    end
                   end
                 end
               end
