@@ -299,7 +299,13 @@ module Waka
                           s[:t]
                         end
                       elsif s[:o] == 'r' && s[:t] == nil
-                        img src: s[:ti]
+                        a href: "https://www.wanikani.com/radicals/#{s[:ms][0]}", target: '_blank' do
+                          img src: s[:ti]
+                        end
+                      elsif s[:o] == 'r'
+                        a href: "https://www.wanikani.com/radicals/#{s[:ms][0]}", target: '_blank' do
+                          s[:t]
+                        end
                       else
                         s[:t]
                       end
@@ -307,7 +313,7 @@ module Waka
                     td class: 'srs' do s[:ssi] end
                     td class: 'pc' do "#{s[:pc]}%" end
                     td class: 'readings' do (s[:rs] || []).join(', ') end
-                    td class: 'meanings' do (s[:ms] || []).join(', ') end
+                    td class: 'meanings' do s[:ms].join(', ') end
                   end
                 end
               end
