@@ -7,7 +7,8 @@ require 'net/http'
 
 module Waka
 
-  BASE_URI = 'https://api.wanikani.com/v2/'
+  WWW_URI = 'https://www.wanikani.com/'
+  API_URI = 'https://api.wanikani.com/v2/'
 
   class << self
 
@@ -78,7 +79,7 @@ module Waka
       q = {}
       q = as.pop if as.last.is_a?(Hash)
 
-      u = BASE_URI + as.join('/')
+      u = API_URI + as.join('/')
       u += '?' + q.map { |k, v| "#{k}=#{v.map(&:to_s).join(',')}" }.join('&') \
         if q.any?
       u = URI(u)
@@ -295,19 +296,19 @@ module Waka
                     td class: [ 'level', s[:l] == max_level ? 'current' : nil ].compact do s[:l] end
                     td class: 'text' do
                       if s[:o] == 'k'
-                        a href: "https://www.wanikani.com/kanji/#{s[:t]}", target: '_blank' do
+                        a href: "#{WWW_URI}kanji/#{s[:t]}", target: '_blank' do
                           s[:t]
                         end
                       elsif s[:o] == 'r' && s[:t] == nil
-                        a href: "https://www.wanikani.com/radicals/#{s[:ms][0]}", target: '_blank' do
+                        a href: "#{WWW_URI}radicals/#{s[:ms][0]}", target: '_blank' do
                           img src: s[:ti]
                         end
                       elsif s[:o] == 'r'
-                        a href: "https://www.wanikani.com/radicals/#{s[:ms][0]}", target: '_blank' do
+                        a href: "#{WWW_URI}radicals/#{s[:ms][0]}", target: '_blank' do
                           s[:t]
                         end
                       else
-                        a href: "https://www.wanikani.com/vocabulary/#{s[:t]}", target: '_blank' do
+                        a href: "#{WWW_URI}vocabulary/#{s[:t]}", target: '_blank' do
                           s[:t]
                         end
                       end
