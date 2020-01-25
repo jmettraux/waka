@@ -108,6 +108,8 @@ td.readings {
   font-family: var(--japanese-font-family);
   font-size: 280%;
   padding-top: 1.4em;
+  opacity: 0;
+  transition: opacity 2.1s ease-in-out;
 }
 td.readings .reading {
   margin-bottom: 0.28em;
@@ -116,5 +118,7 @@ td.meanings {
   font-family: var(--latin-font-family);
   font-size: 210%;
   padding-right: 0.49em;
+  opacity: 0;
+  transition: opacity 2.1s ease-in-out;
 }
 
