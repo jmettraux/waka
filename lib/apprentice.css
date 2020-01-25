@@ -100,6 +100,10 @@ body {
   font-family: var(--japanese-font-family);
   */
 }
+.subject-detail td[rowspan] a {
+  color: white;
+  text-decoration: none;
+}
 tr.data td:not(.text) {
   padding: 1.4em;
   opacity: 0.35;

@@ -174,11 +174,11 @@ module Waka
             end
             levels.each do |ss|
               ss.each do |s|
-                div k: [ 'subject-detail', s[:o], 'hidden' ], "data-subject-id": s[:sid] do
+                div k: [ 'subject-detail', s[:o], 'hidden' ], 'data-subject-id': s[:sid] do
                   table do
                     tr do
                       td k: 'text', rowspan: '2' do
-                        s[:t] ? s[:t] : img(src: s[:ti])
+                        subject_to_anchor(s)
                       end
                       td k: 'readings', colspan: 2 do
                         rs = s[:rs] || []
@@ -304,28 +304,11 @@ module Waka
                 end
                 subjects.each do |s|
                   tr class: [ s[:o], "l#{s[:l]}", s[:ssi] ] do
+                    cur = s[:l] == max_level ? 'current' : nil
                     td class: 'id' do s[:sid] end
                     td class: 'type' do s[:o] end
-                    td class: [ 'level', s[:l] == max_level ? 'current' : nil ].compact do s[:l] end
-                    td class: 'text' do
-                      if s[:o] == 'k'
-                        a href: "#{WWW_URI}kanji/#{s[:t]}", target: '_blank' do
-                          s[:t]
-                        end
-                      elsif s[:o] == 'r' && s[:t] == nil
-                        a href: "#{WWW_URI}radicals/#{s[:ms][0]}", target: '_blank' do
-                          img src: s[:ti]
-                        end
-                      elsif s[:o] == 'r'
-                        a href: "#{WWW_URI}radicals/#{s[:ms][0]}", target: '_blank' do
-                          s[:t]
-                        end
-                      else
-                        a href: "#{WWW_URI}vocabulary/#{s[:t]}", target: '_blank' do
-                          s[:t]
-                        end
-                      end
-                    end
+                    td class: [ 'level', cur ].compact do s[:l] end
+                    td class: 'text' do; subject_to_anchor(s); end
                     td class: 'srs' do s[:ssi] end
                     td class: 'pc' do "#{s[:pc]}%" end
                     td class: 'readings' do (s[:rs] || []).join(', ') end
@@ -431,9 +414,17 @@ module Waka
               r != nil ? r.to_s : nil
             end
         end
-        def method_missing(m, *args, &block)
-#p m
-          @children << Html.new(m, args, &block)
+        #def method_missing(m, *args, &block)
+        #  @children << Html.new(m, args, &block)
+        #end
+        %w[
+          html
+            head meta style title link script
+            body div span table tr th td a img
+        ].each do |tag|
+          define_method(tag) do |*args, &block|
+            @children << Html.new(tag, args, &block)
+          end
         end
         def to_s
           atts = @attributes
@@ -459,6 +450,32 @@ module Waka
         end
         def self.generate(&block)
           Html.new(:html, {}, &block)
+        end
+      end
+
+      # Re-opening to add a special method sitting on a fence...
+      #
+      class Html
+
+        def subject_to_anchor(s)
+
+          if s[:o] == 'k'
+            a href: "#{WWW_URI}kanji/#{s[:t]}", target: '_blank' do
+              s[:t]
+            end
+          elsif s[:o] == 'r' && s[:t] == nil
+            a href: "#{WWW_URI}radicals/#{s[:ms][0]}", target: '_blank' do
+              img src: s[:ti]
+            end
+          elsif s[:o] == 'r'
+            a href: "#{WWW_URI}radicals/#{s[:ms][0]}", target: '_blank' do
+              s[:t]
+            end
+          else
+            a href: "#{WWW_URI}vocabulary/#{s[:t]}", target: '_blank' do
+              s[:t]
+            end
+          end
         end
       end
     end
