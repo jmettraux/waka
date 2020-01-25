@@ -150,6 +150,9 @@ module Waka
                     div k: 'text' do
                       s[:t] ? s[:t] : img(src: s[:ti])
                     end
+                    div k: 'level' do
+                      s[:l]
+                    end
                     div k: 'ssi' do
                       '|' * s[:ssi][1..-1].to_i
                     end

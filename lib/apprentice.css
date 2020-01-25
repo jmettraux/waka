@@ -30,6 +30,15 @@ body {
   padding: 0.14em;
   top: 0;
 }
+.subject .level {
+  position: absolute;
+  left: 0;
+  color: white;
+  font-size: 56%;
+  padding: 0.14em;
+  margin-left: 0.14em;
+  top: 0;
+}
 .subject .next {
   position: absolute;
   right: 0;
@@ -50,6 +59,7 @@ body {
   border: 7px solid white;
 }
 .subject.selected .ssi { display: none; }
+.subject.selected .level { display: none; }
 .subject.selected .next { display: none; }
 .r img {
   filter: brightness(0) invert(1);
