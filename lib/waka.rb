@@ -143,9 +143,10 @@ module Waka
           end
           body do
             levels.each do |ss|
-              div k: [ 'level', ss.first[:l] == max_level ? 'current' : 'old' ] do
+              current_level = ss.first[:l] == max_level
+              div k: [ 'level', current_level ? 'current' : 'old' ] do
                 ss.each do |s|
-                  div k: [ 'subject', s[:o], s[:ssi] ], "data-subject-id": s[:sid].to_s do
+                  div k: [ 'subject', s[:o], s[:ssi] ], 'data-subject-id': s[:sid].to_s do
                     div k: 'text' do
                       s[:t] ? s[:t] : img(src: s[:ti])
                     end
@@ -153,7 +154,16 @@ module Waka
                       '|' * s[:ssi][1..-1].to_i
                     end
                     div k: 'next' do
-                      Time.now.day == s[:aa].day ? s[:aa].strftime('%H') : ''
+                      #Time.now.day == s[:aa].day ? s[:aa].strftime('%H') : ''
+                      n = Time.now
+                      if n.day == s[:aa].day
+                        s[:aa].strftime('%H')
+                      elsif s[:aa] < (n + 24 * 3600)
+                        s[:aa].strftime('%a')[0, 2].downcase +
+                        s[:aa].strftime('%H')
+                      else
+                        ''
+                      end
                     end
                   end
                 end
