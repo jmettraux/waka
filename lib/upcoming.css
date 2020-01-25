@@ -32,7 +32,7 @@ td.level.current {
 }
 td.text {
   font-size: 147%;
-  font-family: var(--japanese-font-family);
+  font-family: var(--kosugi-maru-font-family);
   color: white;
   text-align: center;
 }
@@ -42,7 +42,7 @@ td.srs {
 }
 td.readings {
   font-size: 110%;
-  font-family: var(--japanese-font-family);
+  font-family: var(--kosugi-maru-font-family);
 }
 td.pc {
   font-size: 70%;

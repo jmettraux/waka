@@ -7,8 +7,12 @@ require 'net/http'
 
 module Waka
 
-  WWW_URI = 'https://www.wanikani.com/'
-  API_URI = 'https://api.wanikani.com/v2/'
+  WWW_URI =
+    'https://www.wanikani.com/'
+  API_URI =
+    'https://api.wanikani.com/v2/'
+  FONT_HREF =
+    'https://fonts.googleapis.com/css?family=Kosugi|Kosugi+Maru&display=swap'
 
   class << self
 
@@ -134,7 +138,7 @@ module Waka
           head do
             meta charset: 'UTF-8'
             title "WK Apprentice - #{Time.now.strftime('%F %A %R')}"
-            link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
+            link href: FONT_HREF, rel: 'stylesheet'
             style do
               File.read(File.join(File.dirname(__FILE__), 'reset.css')) +
               File.read(File.join(File.dirname(__FILE__), 'common.css')) +
@@ -284,7 +288,7 @@ module Waka
           head do
             meta charset: 'UTF-8'
             title "WK Upcoming - #{u.first[0].strftime('%F %A %R')}"
-            link href: 'https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap', rel: 'stylesheet'
+            link href: FONT_HREF, rel: 'stylesheet'
             style do
               File.read(File.join(File.dirname(__FILE__), 'reset.css')) +
               File.read(File.join(File.dirname(__FILE__), 'common.css')) +
