@@ -97,6 +97,7 @@ body {
   font-size: 1500%;
   width: 32%;
   font-family: var(--kosugi-font-family);
+  text-shadow: 0.028em 0.028em 0.028em rgba(0, 0, 0, 0.3);
 }
 .subject-detail td[rowspan] a {
   color: white;
