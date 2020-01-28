@@ -380,15 +380,26 @@ module Waka
           d['character_images']
             .find { |ci| ci['metadata']['dimensions'] == '32x32' }
             .fetch('url')
+        o =
+          s['object'][0, 1]
+
+        rs = d['readings']
+        if rs
+          rs.each do |r|
+            r['reading'] = "(#{r['reading']})" unless r['accepted_answer']
+          end
+          prs, nprs = rs.partition { |r| r['primary'] }
+          rs = (prs + nprs).collect { |r| r['reading'] }
+        end
 
         { sid: s['id'],
           l: d['level'],
           #cl: d['level'] == current_level,
-          o: s['object'][0, 1],
+          o: o,
           t: t,
           ti: ti,
+          rs: rs,
           ms: d['meanings'].map { |m| m['meaning'] },
-          rs: (d['readings'].map { |r| r['reading'] } rescue nil),
           pos: d['part_of_speech'] }
       end
 
