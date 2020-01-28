@@ -56,7 +56,10 @@ upcoming_html:
 	$(RUBY) -Ilib -r pp -r waka -e "puts Waka::Reports.upcoming_html" > up.html
 uh: upcoming_html
 
+auh: ah uh
+au: auh
+
 .PHONY: \
   summary subjects assignments reviews rstatistics lprogressions \
-  apprentice apprentice_html upcoming upcoming_html
+  apprentice apprentice_html upcoming upcoming_html auh
 
