@@ -14,6 +14,13 @@ body {
   display: inline-block;
   position: relative;
 }
+.count {
+  font-color: lightgrey;
+  font-size: 50%;
+  display: inline-block;
+  vertical-align: bottom;
+  padding-bottom: 0.56em;
+}
 .subject .text {
   font-size: 210%;
   font-family: var(--kosugi-maru-font-family);

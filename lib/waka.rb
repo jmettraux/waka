@@ -174,6 +174,17 @@ module Waka
                     end
                   end
                 end
+                div k: 'count' do
+                  div k: 'k' do
+                    "k#{ss.select { |s| s[:o] == 'k' }.size}"
+                  end
+                  div k: 'r' do
+                    "r#{ss.select { |s| s[:o] == 'r' }.size}"
+                  end
+                  div k: 'total' do
+                    ss.size
+                  end
+                end
               end
             end
             levels.each do |ss|
