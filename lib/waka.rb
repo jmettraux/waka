@@ -76,6 +76,12 @@ module Waka
       get(:level_progressions)
     end
 
+    def level_krs(level)
+
+      get(:subjects, types: %w[ kanji radical ], levels: [ level ])['data']
+        .collect { |s| { sid: s['id'], o: s['object'][0, 1] } }
+    end
+
     protected
 
     def get(*as)
@@ -120,18 +126,27 @@ module Waka
 
         apprentices = session
           .assignments(
-            srs_stages: [ 1, 2, 3, 4 ],
+            srs_stages: [ 1, 2, 3, 4 ] + [ 5 ],
             subject_types: %w[ radical kanji ])
 
         merge!(subjects, apprentices)
         merge!(subjects, session.subjects(subjects.keys))
         merge!(subjects, session.rstatistics(subjects.keys))
+
+        subjects = subjects.values.sort_by { |s| s[:aa] }
+        completion = determine_level_completion(session, subjects)
+
+        subjects = subjects.select { |s| s[:ssi][0, 1] == 'a' }
+
+        [ completion, subjects ]
       end
 
       def apprentice_html
 
-        subjects = apprentice.values.sort_by { |s| s[:aa].to_f }
-        max_level = subjects.collect { |s| s[:l] }.max
+        completion, subjects = apprentice()
+
+        #max_level = subjects.collect { |s| s[:l] }.max
+        max_level = completion[:max_level]
         levels = subjects.partition { |s| s[:l] == max_level }
 
         Html.generate {
@@ -157,6 +172,9 @@ module Waka
                     div k: 'level' do
                       s[:l]
                     end
+                    #div k: 'last' do
+                    #  s[:last] ? '*' : ''
+                    #end
                     div k: 'ssi' do
                       '|' * s[:ssi][1..-1].to_i
                     end
@@ -183,6 +201,11 @@ module Waka
                   end
                   div k: 'total' do
                     ss.size
+                  end
+                  div k: 'over' do
+                    current_level ?
+                      completion[:min_time].strftime('%F %A %R') :
+                      ''
                   end
                 end
               end
@@ -343,6 +366,46 @@ module Waka
       end
 
       protected
+
+      H4 = 4 * 3600
+      H8 = 2 * H4
+      H24 = 3 * H8
+      H48 = 2 * H24
+
+      TIMES = [
+        H4 + H8 + H24 + H48,
+        H8 + H24 + H48,
+        H24 + H48,
+        H48,
+        0 ]
+
+      def determine_guru_time(subject)
+
+        subject[:aa] + TIMES[subject[:ss]]
+      end
+
+      def determine_level_completion(session, subjects)
+
+        ml = subjects.collect { |s| s[:l] }.max
+        subjects = subjects.select { |s| s[:l] == ml }
+
+        lkrs = session.level_krs(ml)
+        ninety = (lkrs.select { |s| s[:o] == 'k' }.size * 0.9).ceil
+
+        rs, ks = subjects.partition { |s| s[:o] == 'r' }
+
+        last_subject =
+          (ks.size >= ninety ? ks : rs)
+            .select { |s| s[:ss] < 5 }
+            .sort_by { |s| s[:aa] }
+            .last
+
+        last_subject[:last] = true
+
+        mt = determine_guru_time(last_subject)
+
+        { max_level: ml, min_time: mt }
+      end
 
       def merge!(subjects, elts)
 
