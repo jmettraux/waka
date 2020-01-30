@@ -393,12 +393,14 @@ module Waka
         ninety = (lkrs.select { |s| s[:o] == 'k' }.size * 0.9).ceil
 
         rs, ks = subjects.partition { |s| s[:o] == 'r' }
+        ss = (ks.size >= ninety ? ks : rs)
 
-        last_subject =
-          (ks.size >= ninety ? ks : rs)
-            .select { |s| s[:ss] < 5 }
-            .sort_by { |s| s[:aa] }
-            .last
+        lowest = ss
+          .collect { |s| s[:ss] }.min
+        last_subject = ss
+          .select { |s| s[:ss] == lowest }
+          .sort_by { |s| s[:aa] }
+          .last
 
         last_subject[:last] = true
 
