@@ -381,6 +381,8 @@ module Waka
 
       def determine_guru_time(subject)
 
+        return Time.now if subject[:ss] > 4
+
         subject[:aa] + TIMES[subject[:ss]]
       end
 
