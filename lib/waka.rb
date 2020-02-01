@@ -418,6 +418,7 @@ module Waka
         last_subject[:last] = true
 
         mt = determine_guru_time(last_subject)
+        mt += TIMES[0] if last_subject[:o] == 'r'
 
         { max_level: ml, min_time: mt }
       end
