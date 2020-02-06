@@ -367,13 +367,10 @@ module Waka
 
       protected
 
-      H4 = 4 * 3600
-      H8 = 2 * H4
-      H24 = 3 * H8
-      H48 = 2 * H24
+      H1, H4, H8, H24, H48 = [ 1, 4, 8, 24, 48 ].collect { |i| i * 3600 }
 
       TIMES = [
-        H4 + H8 + H24 + H48,
+        H4 + H8 + H24 + H48 - H1,
         H8 + H24 + H48,
         H24 + H48,
         H48,
@@ -418,7 +415,7 @@ module Waka
         last_subject[:last] = true
 
         mt = determine_guru_time(last_subject)
-        mt += TIMES[0] if last_subject[:o] == 'r'
+        mt += TIMES[0] - H1 if last_subject[:o] == 'r'
 
         { max_level: ml, min_time: mt }
       end
