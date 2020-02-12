@@ -54,6 +54,10 @@ body {
   padding: 0.14em;
   bottom: 0.35em;
 }
+.subject .text a {
+  color: white;
+  text-decoration: none;
+}
 .r .text {
   border: 7px solid var(--radical-colour);
   background-color: var(--radical-colour);

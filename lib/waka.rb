@@ -167,7 +167,7 @@ module Waka
                 ss.each do |s|
                   div k: [ 'subject', s[:o], s[:ssi] ], 'data-subject-id': s[:sid].to_s do
                     div k: 'text' do
-                      s[:t] ? s[:t] : img(src: s[:ti])
+                      subject_to_anchor(s)
                     end
                     div k: 'level' do
                       s[:l]
