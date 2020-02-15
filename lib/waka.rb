@@ -162,7 +162,7 @@ module Waka
           end
           body do
             levels.each do |ss|
-              current_level = ss.first[:l] == max_level
+              current_level = (ss.first[:l] rescue -1) == max_level
               div k: [ 'level', current_level ? 'current' : 'old' ] do
                 ss.each do |s|
                   div k: [ 'subject', s[:o], s[:ssi] ], 'data-subject-id': s[:sid].to_s do
